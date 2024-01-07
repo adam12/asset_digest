@@ -16,6 +16,8 @@ module AssetDigest
 
     def digest_all(source)
       Pathname.new(source).glob("**/*").each do |source_path|
+        next if source_path.directory?
+
         destination_path = generate_destination_path(source_path)
         ensure_folder_exists(destination_path)
         update_manifest(source, source_path, destination_path)

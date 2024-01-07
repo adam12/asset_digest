@@ -4,5 +4,6 @@ require_relative "asset_digest/version"
 
 module AssetDigest
   class Error < StandardError; end
-  # Your code goes here...
+
+  autoload :Digester, __dir__ + "/asset_digest/digester"
 end

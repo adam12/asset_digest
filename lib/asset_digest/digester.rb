@@ -15,7 +15,7 @@ module AssetDigest
     def digest_all(source)
       Pathname.new(source).glob("**/*").each do |source_path|
         destination_path = generate_destination_path(source_path)
-
+        ensure_folder_exists(destination_path)
         FileUtils.cp(source_path, destination_path)
       end
     end
@@ -33,6 +33,10 @@ module AssetDigest
 
       output = "#{filename}-#{sha}#{ext}"
       Pathname.new(destination).join(output)
+    end
+
+    def ensure_folder_exists(destination_path)
+      FileUtils.mkdir_p(destination_path.dirname)
     end
   end
 end

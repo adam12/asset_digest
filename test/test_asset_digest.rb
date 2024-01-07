@@ -17,10 +17,10 @@ class TestAssetDigest < Minitest::Test
     )
 
     assert digester.digest_all
-    assert File.exist?(destination + "/app-52f25376e8.css")
+    assert File.exist?(destination + "/app-b7ca7577aa.css")
     expected_manifest = {
-      "app.css" => "app-52f25376e8.css",
-      "css/styles.css" => "css/styles-af23893a93.css"
+      "app.css" => "app-b7ca7577aa.css",
+      "css/styles.css" => "css/styles-477e369aa7.css"
     }
     assert_equal expected_manifest, digester.manifest.to_h
   end

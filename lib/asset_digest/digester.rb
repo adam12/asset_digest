@@ -49,7 +49,7 @@ module AssetDigest
     attr_accessor :manifest_path
     attr_accessor :algorithm
 
-    def initialize(source:, destination:, manifest_path:, algorithm: Digest::SHA256)
+    def initialize(source:, destination:, manifest_path:, algorithm: Digest::SHA1)
       @source = source
       @destination = destination
       @manifest_path = manifest_path

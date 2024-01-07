@@ -12,7 +12,7 @@ class TestAssetDigest < Minitest::Test
     source = File.join(__dir__, "support/assets")
     digester = AssetDigest::Digester.new(
       destination: destination,
-      manifest: File.join(destination, "manifest.json")
+      manifest_path: File.join(destination, "manifest.json")
     )
 
     assert digester.digest_all(source)

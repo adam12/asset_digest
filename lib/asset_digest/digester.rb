@@ -47,11 +47,13 @@ module AssetDigest
     attr_accessor :destination
     attr_accessor :manifest
     attr_accessor :manifest_path
+    attr_accessor :algorithm
 
-    def initialize(source:, destination:, manifest_path:)
+    def initialize(source:, destination:, manifest_path:, algorithm: Digest::SHA256)
       @source = source
       @destination = destination
       @manifest_path = manifest_path
+      @algorithm = algorithm
       @manifest = Manifest.new(source: source, destination: destination)
     end
 
@@ -67,7 +69,7 @@ module AssetDigest
     private
 
     def generate_digest(source)
-      Digest::SHA256.hexdigest(source.read).slice(0, 10)
+      algorithm.hexdigest(source.read).slice(0, 10)
     end
 
     def generate_destination_path(source, source_path)

@@ -1,5 +1,6 @@
-require "fileutils"
 require "digest"
+require "fileutils"
+require "pathname"
 
 module AssetDigest
   class Digester
@@ -12,16 +13,16 @@ module AssetDigest
     end
 
     def digest_all(source)
-      Dir.glob("**/*", base: source).each do |file|
-        full_path = File.join(source, file)
-        sha = Digest::SHA256.hexdigest(File.read(full_path))
+      Pathname.new(source).glob("**/*").each do |source_path|
+        sha = Digest::SHA256.hexdigest(source_path.read)
 
-        ext = File.extname(file)
-        filename = File.basename(file).chomp(ext)
+        ext = source_path.extname
+        filename = source_path.basename.to_s.chomp(ext)
 
         output = "#{filename}-#{sha}#{ext}"
+        destination_path = Pathname.new(destination).join(output)
 
-        FileUtils.cp(full_path, File.join(destination, output))
+        FileUtils.cp(source_path, destination_path)
       end
     end
   end

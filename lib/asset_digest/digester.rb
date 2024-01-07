@@ -29,19 +29,19 @@ module AssetDigest
   end
 
   class Digester
+    attr_accessor :source
     attr_accessor :destination
     attr_accessor :manifest
     attr_accessor :manifest_path
 
-    def initialize(destination:, manifest_path:)
+    def initialize(source:, destination:, manifest_path:)
+      @source = source
       @destination = destination
       @manifest_path = manifest_path
-      @manifest = {}
+      @manifest = Manifest.new(source: source, destination: destination)
     end
 
-    def digest_all(source)
-      @manifest = Manifest.new(source: source, destination: destination)
-
+    def digest_all
       Pathname.new(source).glob("**/*").each do |source_path|
         next if source_path.directory?
 

@@ -11,11 +11,12 @@ class TestAssetDigest < Minitest::Test
     destination = Dir.mktmpdir
     source = File.join(__dir__, "support/assets")
     digester = AssetDigest::Digester.new(
+      source: source,
       destination: destination,
       manifest_path: File.join(destination, "manifest.json")
     )
 
-    assert digester.digest_all(source)
+    assert digester.digest_all
     assert File.exist?(destination + "/app-52f25376e82c23e5cf88b53cdb568c30cb3fe1432de08134d8280bbc43c91f16.css")
     expected_manifest = {
       "app.css" => "app-52f25376e82c23e5cf88b53cdb568c30cb3fe1432de08134d8280bbc43c91f16.css",

@@ -1,6 +1,7 @@
 require "digest"
 require "fileutils"
 require "pathname"
+require "json"
 
 module AssetDigest
   class Manifest
@@ -20,6 +21,10 @@ module AssetDigest
 
     def to_h
       @manifest
+    end
+
+    def write(destination)
+      destination.write(@manifest.to_json)
     end
 
     private

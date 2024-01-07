@@ -23,5 +23,10 @@ class TestAssetDigest < Minitest::Test
       "css/styles.css" => "css/styles-477e369aa7.css"
     }
     assert_equal expected_manifest, digester.manifest.to_h
+
+    manifest_io = StringIO.new
+    digester.manifest.write(manifest_io)
+
+    refute_nil manifest_io.string
   end
 end

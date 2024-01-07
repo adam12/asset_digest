@@ -28,6 +28,20 @@ module AssetDigest
     attr_accessor :destination
   end
 
+  class SourcePath
+    def initialize(source)
+      @source = Pathname.new(source)
+    end
+
+    def each_asset
+      @source.glob("**/*").each do |source|
+        next if source.directory?
+
+        yield source
+      end
+    end
+  end
+
   class Digester
     attr_accessor :source
     attr_accessor :destination
@@ -42,9 +56,7 @@ module AssetDigest
     end
 
     def digest_all
-      Pathname.new(source).glob("**/*").each do |source_path|
-        next if source_path.directory?
-
+      SourcePath.new(source).each_asset do |source_path|
         destination_path = generate_destination_path(source, source_path)
         ensure_folder_exists(destination_path)
         manifest.add(source_path, destination_path)

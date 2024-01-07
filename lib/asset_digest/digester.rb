@@ -67,7 +67,7 @@ module AssetDigest
     private
 
     def generate_digest(source)
-      Digest::SHA256.hexdigest(source.read)
+      Digest::SHA256.hexdigest(source.read).slice(0, 10)
     end
 
     def generate_destination_path(source, source_path)

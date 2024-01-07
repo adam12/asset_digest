@@ -3,6 +3,31 @@ require "fileutils"
 require "pathname"
 
 module AssetDigest
+  class Manifest
+    def initialize(source:, destination:)
+      @source = source
+      @destination = destination
+      @manifest = {}
+    end
+
+    def add(source_path, destination_path)
+      relative_source_path = source_path.relative_path_from(source)
+      relative_destination_path = destination_path.relative_path_from(destination)
+
+      @manifest[relative_source_path.to_s] = relative_destination_path.to_s
+      true
+    end
+
+    def to_h
+      @manifest
+    end
+
+    private
+
+    attr_accessor :source
+    attr_accessor :destination
+  end
+
   class Digester
     attr_accessor :destination
     attr_accessor :manifest
@@ -15,6 +40,8 @@ module AssetDigest
     end
 
     def digest_all(source)
+      @manifest = Manifest.new(source: source, destination: destination)
+
       Pathname.new(source).glob("**/*").each do |source_path|
         next if source_path.directory?
 
@@ -45,8 +72,7 @@ module AssetDigest
     end
 
     def update_manifest(source, source_path, destination_path)
-      @manifest[source_path.relative_path_from(source).to_s] =
-        destination_path.relative_path_from(destination).to_s
+      manifest.add(source_path, destination_path)
     end
   end
 end

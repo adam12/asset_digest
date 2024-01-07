@@ -34,7 +34,7 @@ module AssetDigest
     def generate_destination_path(source_path)
       sha = generate_digest(source_path)
       ext = source_path.extname
-      filename = source_path.basename.to_s.chomp(ext)
+      filename = source_path.basename(ext)
 
       output = "#{filename}-#{sha}#{ext}"
       Pathname.new(destination).join(output)

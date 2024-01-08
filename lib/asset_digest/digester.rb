@@ -74,7 +74,15 @@ module AssetDigest
     private
 
     def generate_digest(source)
-      algorithm.hexdigest(source.read).slice(0, 10)
+      digest = algorithm.new
+
+      source.open("rb") do |f|
+        until f.eof?
+          digest.update(f.read(1024))
+        end
+      end
+
+      digest.hexdigest.slice(0, 10)
     end
 
     def generate_destination_path(source, source_path)

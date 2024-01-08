@@ -1,52 +1,8 @@
 require "digest"
 require "fileutils"
 require "pathname"
-require "json"
 
 module AssetDigest
-  class Manifest
-    def initialize(source:, destination:)
-      @source = source
-      @destination = destination
-      @manifest = {}
-    end
-
-    def add(source_path, destination_path)
-      relative_source_path = source_path.relative_path_from(source)
-      relative_destination_path = destination_path.relative_path_from(destination)
-
-      @manifest[relative_source_path.to_s] = relative_destination_path.to_s
-      true
-    end
-
-    def to_h
-      @manifest
-    end
-
-    def write(destination)
-      destination.write(@manifest.to_json)
-    end
-
-    private
-
-    attr_accessor :source
-    attr_accessor :destination
-  end
-
-  class SourcePath
-    def initialize(source)
-      @source = Pathname.new(source)
-    end
-
-    def each_asset
-      @source.glob("**/*").each do |source|
-        next if source.directory?
-
-        yield source
-      end
-    end
-  end
-
   class Digester
     attr_accessor :source
     attr_accessor :destination

@@ -23,7 +23,7 @@ module AssetDigest
         destination_path = generate_destination_path(source, source_path)
         ensure_folder_exists(destination_path)
         manifest.add(source_path, destination_path)
-        FileUtils.cp(source_path, destination_path)
+        place_content(source_path, destination_path)
       end
     end
 
@@ -52,6 +52,12 @@ module AssetDigest
 
     def ensure_folder_exists(destination_path)
       FileUtils.mkdir_p(destination_path.dirname)
+    end
+
+    def place_content(source_path, destination_path)
+      return if destination_path.exist?
+
+      FileUtils.cp(source_path, destination_path)
     end
   end
 end

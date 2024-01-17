@@ -30,4 +30,19 @@ class TestAssetDigest < Minitest::Test
       refute_nil manifest_io.string
     end
   end
+
+  def test_manifest_write_file
+    Dir.mktmpdir do |destination|
+      manifest_path = File.join(destination, "manifest.json")
+      source = File.join(__dir__, "support/assets")
+      digester = AssetDigest::Digester.new(
+        source: source,
+        destination: destination,
+        manifest_path: manifest_path
+      )
+
+      assert digester.digest_all
+      assert digester.manifest.write_file(manifest_path)
+    end
+  end
 end

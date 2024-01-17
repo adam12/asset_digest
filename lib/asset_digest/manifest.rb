@@ -24,6 +24,12 @@ module AssetDigest
       destination.write(@manifest.to_json)
     end
 
+    def write_file(path)
+      File.open(path, "w") do |f|
+        write(f)
+      end
+    end
+
     private
 
     attr_accessor :source

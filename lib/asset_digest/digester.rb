@@ -21,10 +21,14 @@ module AssetDigest
     def digest_all
       SourcePath.new(source).each_asset do |source_path|
         destination_path = generate_destination_path(source, source_path)
-        ensure_folder_exists(destination_path)
-        manifest.add(source_path, destination_path)
-        place_content(source_path, destination_path)
+        digest_one(source_path, destination_path)
       end
+    end
+
+    def digest_one(source_path, destination_path)
+      ensure_folder_exists(destination_path)
+      manifest.add(source_path, destination_path)
+      place_content(source_path, destination_path)
     end
 
     private

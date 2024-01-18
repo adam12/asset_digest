@@ -7,7 +7,7 @@ module AssetDigest
       source = Pathname.new("source")
       destination = Pathname.new("destination")
       manifest = Manifest.new(source: source, destination: destination)
-      manifest.add(source.join("test.js"), destination.join("test-SHA.js"))
+      manifest.add(source / "test.js", destination / "test-SHA.js")
 
       assert manifest.write(output = StringIO.new)
 
@@ -21,7 +21,7 @@ module AssetDigest
         source = Pathname.new("source")
         destination = Pathname.new("destination")
         manifest = Manifest.new(source: source, destination: destination)
-        manifest.add(source.join("test.js"), destination.join("test-SHA.js"))
+        manifest.add(source / "test.js", destination / "test-SHA.js")
 
         assert manifest.write_file(f.path)
         assert_equal <<~EXPECTED_MANIFEST.strip, f.read

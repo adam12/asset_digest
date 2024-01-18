@@ -23,6 +23,9 @@ module AssetDigest
         destination_path = generate_destination_path(source, source_path)
         digest_one(source_path, destination_path)
       end
+
+      write_manifest
+      true
     end
 
     def digest_one(source_path, destination_path)
@@ -62,6 +65,10 @@ module AssetDigest
       return if destination_path.exist?
 
       FileUtils.cp(source_path, destination_path)
+    end
+
+    def write_manifest
+      manifest.write_file(manifest_path)
     end
   end
 end

@@ -11,9 +11,9 @@ module AssetDigest
     attr_accessor :algorithm
 
     def initialize(source:, destination:, manifest_path:, algorithm: Digest::SHA1)
-      @source = source
-      @destination = destination
-      @manifest_path = manifest_path
+      @source = Pathname.new(source)
+      @destination = Pathname.new(destination)
+      @manifest_path = Pathname.new(manifest_path)
       @algorithm = algorithm
       @manifest = Manifest.new(source: source, destination: destination)
     end
@@ -54,7 +54,7 @@ module AssetDigest
       filename = source_path.relative_path_from(source).to_s.chomp(ext)
 
       output = "#{filename}-#{sha}#{ext}"
-      Pathname.new(destination).join(output)
+      destination / output
     end
 
     def ensure_folder_exists(destination_path)

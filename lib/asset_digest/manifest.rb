@@ -1,10 +1,11 @@
+require "pathname"
 require "json"
 
 module AssetDigest
   class Manifest
     def initialize(source:, destination:)
-      @source = source
-      @destination = destination
+      @source = Pathname.new(source)
+      @destination = Pathname.new(destination)
       @manifest = {}
     end
 

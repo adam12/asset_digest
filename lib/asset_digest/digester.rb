@@ -1,4 +1,4 @@
-require "digest"
+require "openssl"
 require "fileutils"
 require "pathname"
 
@@ -10,7 +10,7 @@ module AssetDigest
     attr_accessor :manifest_path
     attr_accessor :algorithm
 
-    def initialize(source:, destination:, manifest_path:, algorithm: Digest::SHA1)
+    def initialize(source:, destination:, manifest_path:, algorithm: OpenSSL::Digest.new("SHA1"))
       @source = Pathname.new(source)
       @destination = Pathname.new(destination)
       @manifest_path = Pathname.new(manifest_path)

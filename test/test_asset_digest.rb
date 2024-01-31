@@ -9,14 +9,12 @@ class TestAssetDigest < Minitest::Test
 
   def test_performing_digest
     Dir.mktmpdir do |destination|
-      source = File.join(__dir__, "support/assets")
-      other_source = File.join(__dir__, "support/assets-other")
       digester = AssetDigest::Digester.new(
         destination: destination,
         manifest_path: File.join(destination, "manifest.json")
       )
-      digester.add_source(source)
-      digester.add_source(other_source)
+      digester.add_source(File.join(__dir__, "support/assets"))
+      digester.add_source(File.join(__dir__, "support/assets-other"))
 
       assert digester.digest_all
       assert File.exist?(destination + "/app-b7ca7577aa.css")

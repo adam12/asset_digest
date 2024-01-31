@@ -6,31 +6,37 @@ require "pathname"
 
 module AssetDigest
   class Digester
-    attr_accessor :source
+    attr_accessor :sources
     attr_accessor :destination
     attr_accessor :manifest
     attr_accessor :manifest_path
     attr_accessor :algorithm
 
-    def initialize(source:, destination:, manifest_path:, algorithm: OpenSSL::Digest.new("SHA1"))
-      @source = Pathname.new(source)
+    def initialize(destination:, manifest_path:, algorithm: OpenSSL::Digest.new("SHA1"))
+      @sources = []
       @destination = Pathname.new(destination)
       @manifest_path = Pathname.new(manifest_path)
       @algorithm = algorithm
       @manifest = Manifest.new
     end
 
+    def add_source(source)
+      sources.push(Pathname.new(source))
+    end
+
     def digest_all
-      SourcePath.new(source).each_asset do |source_path|
-        destination_path = generate_destination_path(source, source_path)
-        digest_one(source_path, destination_path)
+      sources.each do |source|
+        SourcePath.new(source).each_asset do |source_path|
+          destination_path = generate_destination_path(source, source_path)
+          digest_one(source, source_path, destination_path)
+        end
       end
 
       write_manifest
       true
     end
 
-    def digest_one(source_path, destination_path)
+    def digest_one(source, source_path, destination_path)
       ensure_folder_exists(destination_path)
       digested_file = DigestedFile.new(
         relative_source_path: source_path.relative_path_from(source),

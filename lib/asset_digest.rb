@@ -8,4 +8,5 @@ module AssetDigest
   autoload :Digester, __dir__ + "/asset_digest/digester"
   autoload :Manifest, __dir__ + "/asset_digest/manifest"
   autoload :SourcePath, __dir__ + "/asset_digest/source_path"
+  autoload :DigestedFile, __dir__ + "/asset_digest/digested_file"
 end

@@ -15,7 +15,7 @@ module AssetDigest
       @destination = Pathname.new(destination)
       @manifest_path = Pathname.new(manifest_path)
       @algorithm = algorithm
-      @manifest = Manifest.new(source: source, destination: destination)
+      @manifest = Manifest.new
     end
 
     def digest_all
@@ -30,7 +30,13 @@ module AssetDigest
 
     def digest_one(source_path, destination_path)
       ensure_folder_exists(destination_path)
-      manifest.add(source_path, destination_path)
+      relative_source_path = source_path.relative_path_from(source)
+      relative_destination_path = destination_path.relative_path_from(destination)
+      digested_file = DigestedFile.new(
+        relative_source_path: relative_source_path,
+        relative_destination_path: relative_destination_path
+      )
+      manifest.add(digested_file)
       place_content(source_path, destination_path)
     end
 

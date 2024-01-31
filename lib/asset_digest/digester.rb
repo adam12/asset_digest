@@ -1,3 +1,5 @@
+# frozen-string-literal: true
+
 require "openssl"
 require "fileutils"
 require "pathname"

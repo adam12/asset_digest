@@ -3,7 +3,7 @@
 source "https://rubygems.org"
 
 # Minimum Ruby version required for asset_digest to work
-ruby ">= #{File.read('.ruby-version')}"
+ruby ">= #{File.read(".ruby-version")}"
 
 # Specify your gem's dependencies in asset_digest.gemspec
 gemspec
